@@ -1,0 +1,458 @@
+/* =====================================================================
+   AD Advisors — Circle of Support
+   Palette:  black #000 · white #fff · brand gold #CEB479
+   Type:     Helvetica Neue / Arial  (nav, menu, UI)
+             Chivo Mono 700          (hero wordmark lockup)
+   Layout values are taken from the guiding mockups in
+   "Guiding Images For Ai" and expressed fluidly so the proportions hold.
+   ===================================================================== */
+
+:root {
+  --black: #000;
+  --white: #fff;
+  --gold: #ceb479;
+
+  --font-ui: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --font-mark: "Chivo Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* page gutter — 2.9% of width in the mock */
+  --pad: clamp(20px, 2.92vw, 44px);
+  /* nav bar height, and the logo that sits at ~half of it */
+  --nav-h: clamp(64px, 10.8vw, 156px);
+  --logo-h: clamp(34px, 5.28vw, 76px);
+
+  /* hero lockup width — everything inside it is a ratio of this */
+  --lock: clamp(280px, 58vw, 840px);
+
+  --bar: clamp(2px, 0.28vw, 4px);   /* hamburger line thickness */
+
+  /* metallic sheen that travels across the hero lockup */
+  --sheen-band: linear-gradient(
+    105deg,
+    transparent 38%,
+    rgba(0, 0, 0, 0.32) 44%,
+    rgba(0, 0, 0, 1) 50%,
+    rgba(0, 0, 0, 0.32) 56%,
+    transparent 62%
+  );
+  --sheen-time: 6.5s;
+  /* near-linear: a highlight sliding over metal shouldn't whip through the middle */
+  --sheen-ease: cubic-bezier(0.42, 0.12, 0.58, 0.88);
+
+  --ease: cubic-bezier(0.76, 0, 0.24, 1);
+  --menu-speed: 0.55s;
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--black);
+  color: var(--black);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body.menu-open { overflow: hidden; }
+
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+
+/* Visually hidden but available to screen readers & search engines. */
+.sr-only {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* =====================================================================
+   NAV
+   ===================================================================== */
+
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 60;
+  height: var(--nav-h);
+  background: var(--white);
+}
+
+.nav-inner {
+  height: 100%;
+  padding: 0 var(--pad);
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 2.78vw, 40px);
+}
+
+.nav-logo { flex: none; display: block; }
+.nav-logo img { height: var(--logo-h); width: auto; }
+
+/* ---- primary links ---- */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2.15vw, 31px);
+  margin-right: auto;
+}
+
+.nav-links a {
+  font-size: clamp(14px, 1.94vw, 28px);
+  line-height: 1;
+  padding: 6px 0;
+  color: var(--black);
+  transition: opacity 0.2s ease;
+}
+.nav-links a:hover { opacity: 0.55; }
+
+/* links step aside while the full menu is open (as in the mockup) */
+.nav.is-open .nav-links {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0s linear 0.25s;
+}
+
+.nav-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 2.1vw, 30px);
+}
+
+/* ---- Contact Us ---- */
+.btn-contact {
+  flex: none;
+  background: var(--black);
+  color: var(--white);
+  font-size: clamp(13px, 1.7vw, 24px);
+  font-weight: 700;
+  line-height: 1;
+  padding: 0.48em 0.72em;
+  transition: background 0.2s ease;
+}
+.btn-contact:hover { background: #2b2b2b; }
+
+/* ---- icon buttons (search / hamburger) ---- */
+.icon-btn {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: clamp(30px, 3.1vw, 44px);
+  height: clamp(30px, 3.1vw, 44px);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--black);
+  cursor: pointer;
+}
+
+.menu-toggle { width: clamp(30px, 3.6vw, 52px); }
+
+.search { position: relative; display: flex; align-items: center; }
+
+.search-toggle svg {
+  width: clamp(20px, 2.9vw, 42px);
+  height: clamp(20px, 2.9vw, 42px);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+
+.search-field {
+  width: 0;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  background: none;
+  min-width: 0;            /* an input's intrinsic width must not widen the nav */
+  font-family: inherit;
+  font-size: clamp(13px, 1.1vw, 16px);
+  color: var(--black);
+  opacity: 0;
+  transition: width 0.35s var(--ease), opacity 0.2s ease, padding 0.35s var(--ease);
+}
+.search.is-open .search-field {
+  width: clamp(120px, 16vw, 230px);
+  padding: 6px 10px 6px 0;
+  border-bottom-color: var(--black);
+  opacity: 1;
+}
+.search-field::placeholder { color: #9a9a9a; }
+
+/* ---- hamburger → X ---- */
+.burger {
+  position: relative;
+  display: block;
+  width: clamp(22px, 3.3vw, 48px);
+  height: clamp(16px, 2.36vw, 34px);
+}
+.burger i {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: var(--bar);
+  background: currentColor;
+  transition: transform 0.4s var(--ease), opacity 0.2s ease 0.1s, top 0.3s var(--ease);
+}
+.burger i:nth-child(1) { top: 0; }
+.burger i:nth-child(2) { top: calc(50% - var(--bar) / 2); }
+.burger i:nth-child(3) { top: calc(100% - var(--bar)); }
+
+.menu-toggle[aria-expanded="true"] .burger i:nth-child(1) {
+  top: calc(50% - var(--bar) / 2);
+  transform: rotate(45deg);
+  transition: top 0.3s var(--ease), transform 0.4s var(--ease) 0.15s;
+}
+.menu-toggle[aria-expanded="true"] .burger i:nth-child(2) {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.menu-toggle[aria-expanded="true"] .burger i:nth-child(3) {
+  top: calc(50% - var(--bar) / 2);
+  transform: rotate(-45deg);
+  transition: top 0.3s var(--ease), transform 0.4s var(--ease) 0.15s;
+}
+
+/* =====================================================================
+   FULL-SCREEN MENU
+   Slides down out of the nav and takes over the whole viewport.
+   ===================================================================== */
+
+.menu {
+  position: fixed;
+  z-index: 50;               /* under the nav, which stays visible */
+  top: var(--nav-h);
+  left: 0; right: 0;
+  height: calc(100dvh - var(--nav-h));
+  background: var(--white);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  transform: translateY(-100%);
+  visibility: hidden;
+  transition:
+    transform var(--menu-speed) var(--ease),
+    visibility 0s linear var(--menu-speed);
+}
+
+.menu.is-open {
+  transform: translateY(0);
+  visibility: visible;
+  transition:
+    transform var(--menu-speed) var(--ease),
+    visibility 0s linear 0s;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(24px, 3vw, 48px) 0;
+  /* the mock indents the grid further than the page gutter */
+  padding: clamp(20px, 3.1vw, 46px) var(--pad) 64px clamp(24px, 8.33vw, 120px);
+}
+
+.menu-col {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.4s ease, transform 0.5s var(--ease);
+}
+.menu.is-open .menu-col {
+  opacity: 1;
+  transform: none;
+}
+.menu.is-open .menu-col:nth-child(1) { transition-delay: 0.18s; }
+.menu.is-open .menu-col:nth-child(2) { transition-delay: 0.24s; }
+.menu.is-open .menu-col:nth-child(3) { transition-delay: 0.30s; }
+.menu.is-open .menu-col:nth-child(4) { transition-delay: 0.36s; }
+
+.menu-head {
+  margin: 0 0 clamp(12px, 1.35vw, 20px);
+  font-size: clamp(26px, 3.1vw, 45px);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+.menu-head a { transition: opacity 0.2s ease; }
+.menu-head a:hover { opacity: 0.55; }
+
+.menu-list {
+  margin: 0;
+  padding: 0 0 0 clamp(4px, 0.7vw, 10px);
+  list-style: none;
+}
+.menu-list li + li { margin-top: clamp(7px, 0.78vw, 11px); }
+.menu-list a {
+  display: inline-block;
+  font-size: clamp(12px, 0.97vw, 14px);
+  font-weight: 700;
+  line-height: 1.2;
+  transition: opacity 0.2s ease;
+}
+.menu-list a:hover { opacity: 0.5; }
+
+/* =====================================================================
+   HERO
+   ===================================================================== */
+
+.hero {
+  min-height: 100dvh;
+  padding: calc(var(--nav-h) + 24px) var(--pad) 24px;
+  background: var(--black);
+  display: grid;
+  place-items: center;
+}
+
+.lockup {
+  width: var(--lock);
+  display: flex;
+  align-items: center;
+  gap: calc(var(--lock) * 0.086);
+}
+
+.lockup-mark {
+  position: relative;
+  display: block;
+  flex: none;
+  width: calc(var(--lock) * 0.298);
+}
+.lockup-mark img { width: 100%; height: auto; }
+
+.lockup-type {
+  margin: 0;
+  color: var(--gold);
+  font-family: var(--font-mark);
+  font-weight: 700;
+  font-size: calc(var(--lock) * 0.1234);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ---------------------------------------------------------------------
+   Metallic sheen
+   One highlight travels across the whole lockup. Both halves share a
+   coordinate frame measured in --lock, so the emblem and the wordmark
+   read as a single piece of metal catching the light. The wordmark sits
+   38.4% along the lockup, hence --sheen-x.
+   --------------------------------------------------------------------- */
+
+.lockup-mark-sheen {
+  position: absolute;
+  inset: 0;
+  filter: brightness(1.85) saturate(0.72);
+  -webkit-mask-image: var(--sheen-band);
+          mask-image: var(--sheen-band);
+  -webkit-mask-size: calc(var(--lock) * 1.4) 100%;
+          mask-size: calc(var(--lock) * 1.4) 100%;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-position: calc(var(--lock) * -1.4) 0;
+          mask-position: calc(var(--lock) * -1.4) 0;
+  animation: sheen-mark var(--sheen-time) var(--sheen-ease) infinite;
+  pointer-events: none;
+}
+
+@keyframes sheen-mark {
+  0%        { -webkit-mask-position: calc(var(--lock) * -1.4) 0;
+                      mask-position: calc(var(--lock) * -1.4) 0; }
+  45%, 100% { -webkit-mask-position: calc(var(--lock) * 1.05) 0;
+                      mask-position: calc(var(--lock) * 1.05) 0; }
+}
+
+/* the wordmark is painted through the same band, clipped to the glyphs */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .lockup-type {
+    --sheen-x: calc(var(--lock) * -0.384);
+    background-image:
+      linear-gradient(
+        105deg,
+        transparent 38%,
+        rgba(255, 250, 236, 0.30) 44%,
+        rgba(255, 253, 246, 0.95) 50%,
+        rgba(255, 250, 236, 0.30) 56%,
+        transparent 62%
+      ),
+      linear-gradient(var(--gold), var(--gold));
+    background-size: calc(var(--lock) * 1.4) 100%, 100% 100%;
+    background-repeat: no-repeat;
+    background-position: calc(var(--lock) * -1.4 + var(--sheen-x)) 0, 0 0;
+    -webkit-background-clip: text;
+            background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: sheen-type var(--sheen-time) var(--sheen-ease) infinite;
+  }
+}
+
+@keyframes sheen-type {
+  0%        { background-position: calc(var(--lock) * -1.4 + var(--sheen-x)) 0, 0 0; }
+  45%, 100% { background-position: calc(var(--lock) * 1.05 + var(--sheen-x)) 0, 0 0; }
+}
+
+.lockup-line {
+  display: block;
+  line-height: 0.87;
+}
+
+.lockup-tag {
+  display: block;
+  margin-top: 0.19em;
+  font-size: 0.466em;
+  line-height: 1;
+  letter-spacing: 0.04em;
+}
+
+/* =====================================================================
+   RESPONSIVE
+   ===================================================================== */
+
+/* the inline links give way to the hamburger on narrow screens */
+@media (max-width: 900px) {
+  .nav-links { display: none; }
+  .menu-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 560px) {
+  :root { --lock: min(86vw, 420px); }
+
+  /* on a narrow phone the open search field needs the button's room */
+  .nav-actions:has(.search.is-open) .btn-contact { display: none; }
+
+  .menu-grid {
+    grid-template-columns: 1fr;
+    padding-left: var(--pad);
+  }
+  .lockup {
+    flex-direction: column;
+    gap: 22px;
+    text-align: center;
+  }
+  .lockup-mark { width: calc(var(--lock) * 0.42); }
+  .lockup-type {
+    font-size: calc(var(--lock) * 0.175);
+    /* stacked, so the wordmark shares the emblem's left edge */
+    --sheen-x: 0px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+    animation-duration: 0.01ms !important;
+  }
+  /* park the sheen rather than flicker it — the logo just sits in flat gold */
+  .lockup-mark-sheen { animation: none !important; opacity: 0; }
+  .lockup-type { animation: none !important; }
+}

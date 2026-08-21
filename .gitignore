@@ -1,0 +1,9 @@
+.DS_Store
+.vercel
+node_modules/
+*.log
+
+# local preview scratch files
+_preview*.html
+_f[0-9]*.html
+_diag.html

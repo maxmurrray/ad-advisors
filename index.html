@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AD Advisors · Circle of Support</title>
+<meta name="description" content="AD Advisors — Circle of Support. Advisory and professional development for athletic departments, coaches and collegiate leadership." />
+<meta property="og:title" content="AD Advisors · Circle of Support" />
+<meta property="og:description" content="Advisory and professional development for athletic departments, coaches and collegiate leadership." />
+<meta property="og:type" content="website" />
+<meta name="theme-color" content="#000000" />
+<link rel="icon" href="assets/logos/emblem-gold.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<!-- ==================== NAV ==================== -->
+<header class="nav" data-nav>
+  <div class="nav-inner">
+
+    <a class="nav-logo" href="index.html" aria-label="AD Advisors — home">
+      <img src="assets/logos/emblem-nav.svg" alt="AD Advisors" />
+    </a>
+
+    <!-- TODO: point these at the real pages once they exist
+         (services.html / our-work.html / about.html / as-seen-in.html) -->
+    <nav class="nav-links" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="#">Services</a>
+      <a href="#">Our Work</a>
+      <a href="#">About Us</a>
+      <a href="#">As Seen In</a>
+    </nav>
+
+    <div class="nav-actions">
+      <!-- TODO: point at contact.html -->
+      <a class="btn-contact" href="#">Contact Us</a>
+
+      <form class="search" role="search" data-search action="#" onsubmit="return false;">
+        <!-- TODO: set action="/search" (or your host's search URL) and remove onsubmit -->
+        <input class="search-field" type="search" name="q" placeholder="Search" aria-label="Search this site" tabindex="-1" />
+        <button class="icon-btn search-toggle" type="button" aria-label="Search" aria-expanded="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle cx="10.5" cy="10.5" r="6.75" />
+            <line x1="15.4" y1="15.4" x2="21" y2="21" />
+          </svg>
+        </button>
+      </form>
+
+      <button class="icon-btn menu-toggle" type="button" aria-label="Open menu"
+              aria-expanded="false" aria-controls="site-menu">
+        <span class="burger" aria-hidden="true"><i></i><i></i><i></i></span>
+      </button>
+    </div>
+
+  </div>
+</header>
+
+<!-- ============ FULL-SCREEN DROP-DOWN MENU ============ -->
+<div class="menu" id="site-menu" data-menu inert>
+  <nav class="menu-grid" aria-label="Full menu">
+
+    <div class="menu-col">
+      <h2 class="menu-head"><a href="#">Services</a></h2>
+      <ul class="menu-list">
+        <li><a href="#">Crisis Communication</a></li>
+        <li><a href="#">Coaching Change</a></li>
+        <li><a href="#">High Performance Wellbeing</a></li>
+        <li><a href="#">Fan Experience</a></li>
+        <li><a href="#">NIL Collectives and Fundraising</a></li>
+        <li><a href="#">Brand Elevation</a></li>
+        <li><a href="#">Professional Development for Departments</a></li>
+        <li><a href="#">Professional Development for Coaches</a></li>
+        <li><a href="#">Implicit Bias Training</a></li>
+      </ul>
+    </div>
+
+    <div class="menu-col">
+      <h2 class="menu-head"><a href="#">Our Work</a></h2>
+    </div>
+
+    <div class="menu-col">
+      <h2 class="menu-head"><a href="#">About Us</a></h2>
+      <ul class="menu-list">
+        <li><a href="#">Carlette Patterson</a></li>
+        <li><a href="#">Jay Jacobs</a></li>
+        <li><a href="#">Ari Fleischer</a></li>
+        <li><a href="#">Jeff Holbrook</a></li>
+        <li><a href="#">Ashley Hovey</a></li>
+      </ul>
+    </div>
+
+    <div class="menu-col">
+      <h2 class="menu-head"><a href="#">As Seen In</a></h2>
+    </div>
+
+  </nav>
+</div>
+
+<!-- ==================== HERO ==================== -->
+<main>
+  <h1 class="sr-only">AD Advisors — Circle of Support</h1>
+
+  <section class="hero">
+    <div class="lockup">
+      <span class="lockup-mark" aria-hidden="true">
+        <img src="assets/logos/emblem-gold.svg" alt="" />
+        <!-- brightened copy, revealed through a travelling gradient mask -->
+        <img class="lockup-mark-sheen" src="assets/logos/emblem-gold.svg" alt="" />
+      </span>
+      <p class="lockup-type">
+        <span class="lockup-line">AD</span>
+        <span class="lockup-line">Advisors</span>
+        <span class="lockup-tag">Circle of Support</span>
+      </p>
+    </div>
+  </section>
+</main>
+
+<script src="js/main.js"></script>
+</body>
+</html>
