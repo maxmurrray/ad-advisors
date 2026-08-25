@@ -435,6 +435,114 @@ a { color: inherit; text-decoration: none; }
 }
 .chair.is-in .chair-copy { opacity: 1; transform: translateY(0); }
 
+/* =====================================================================
+   THE CIRCLE — leadership roster
+   A three-up roster: circular portrait ringed in gold, then name, role,
+   one line of credential, and a read-more. Rows are left-packed, so a
+   short final row sits under the first two columns rather than centring.
+   ===================================================================== */
+
+/* The mockup was a standalone page, so its top padding cleared the fixed
+   nav. Here the section sits mid-page between two rules — no nav to clear. */
+.circle {
+  background: var(--white);
+  padding: clamp(40px, 5vw, 88px) 0 clamp(64px, 8vw, 120px);
+}
+
+.circle-inner {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--pad);
+}
+
+.circle-head {
+  margin: 0 0 clamp(40px, 5.5vw, 92px);
+  color: var(--black);
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: clamp(34px, 4.4vw, 68px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.circle-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: clamp(24px, 4vw, 72px);
+  row-gap: clamp(48px, 6vw, 96px);
+}
+
+.circle-card > a {
+  display: block;
+  color: var(--black);
+  text-decoration: none;
+}
+
+/* ---- portrait: square box, circular mask, hairline gold ring ---- */
+.circle-photo {
+  position: relative;
+  display: block;
+  width: min(100%, 320px);
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: clamp(18px, 2vw, 30px);
+}
+.circle-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* the ring sits above the photo so it never gets clipped by overflow */
+.circle-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  pointer-events: none;
+  transition: border-color 0.2s ease;
+}
+
+.circle-name,
+.circle-role,
+.circle-note {
+  display: block;
+  font-weight: 700;
+  line-height: 1.32;
+}
+
+.circle-name { font-size: clamp(16px, 1.32vw, 21px); }
+.circle-role { font-size: clamp(16px, 1.32vw, 21px); }
+
+.circle-note {
+  margin-top: 0.85em;
+  font-size: clamp(15px, 1.26vw, 20px);
+  max-width: 26ch;
+}
+
+.circle-more {
+  display: inline-block;
+  margin-top: clamp(14px, 1.5vw, 24px);
+  font-size: clamp(14px, 1.15vw, 18px);
+  font-weight: 400;
+  line-height: 1;
+}
+.circle-more i {
+  font-style: normal;
+  display: inline-block;
+  margin-left: 0.4em;
+  transition: transform 0.2s var(--ease);
+}
+
+.circle-card > a:hover .circle-more i { transform: translateX(5px); }
+.circle-card > a:hover .circle-photo::after { border-color: var(--black); }
+
 .lockup {
   width: var(--lock);
   display: flex;
@@ -542,6 +650,7 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 900px) {
   .nav-links { display: none; }
   .menu-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .circle-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 860px) {
@@ -577,6 +686,10 @@ a { color: inherit; text-decoration: none; }
   /* the two-line break is a desktop composition — let the phone wrap it */
   .statement-line { display: inline; }
   .statement-head { text-wrap: pretty; }
+
+  .circle-grid { grid-template-columns: minmax(0, 1fr); }
+  .circle-photo { width: min(72%, 260px); }
+  .circle-note { max-width: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
