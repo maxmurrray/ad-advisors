@@ -76,3 +76,28 @@
     });
   }
 })();
+
+/* ---- scroll reveal for the second hero ---- */
+(function () {
+  'use strict';
+
+  var chair = document.querySelector('.chair');
+  if (!chair) return;
+
+  /* no observer, or motion turned down: just show it */
+  if (!('IntersectionObserver' in window) ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    chair.classList.add('is-in');
+    return;
+  }
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-in');
+      io.unobserve(entry.target);   /* it plays once, on the way down */
+    });
+  }, { threshold: 0.22 });
+
+  io.observe(chair);
+})();

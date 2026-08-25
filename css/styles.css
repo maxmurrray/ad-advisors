@@ -373,6 +373,68 @@ a { color: inherit; text-decoration: none; }
   }
 }
 
+/* =====================================================================
+   SECTION TWO — "We've sat in the chair"
+   The headline rises line by line and the copy fades up behind it, once,
+   when the section first scrolls into view.
+   ===================================================================== */
+
+.chair {
+  background: var(--white);
+  padding: clamp(72px, 9vw, 150px) 0 clamp(64px, 8vw, 130px);
+}
+
+.chair-inner {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 var(--pad);
+}
+
+.chair-head {
+  margin: 0;
+  color: var(--black);
+  font-family: var(--font-ui);
+  font-weight: 400;
+  font-size: clamp(27px, 3.85vw, 62px);
+  line-height: 1.18;
+  letter-spacing: -0.016em;
+}
+
+/* each line is masked so it can rise into view on scroll */
+.chair-line {
+  display: block;
+  overflow: hidden;
+}
+.chair-line > span {
+  display: block;
+  transform: translateY(105%);
+  transition: transform 0.72s cubic-bezier(0.22, 0.68, 0.24, 1);
+}
+.chair.is-in .chair-line > span { transform: translateY(0); }
+.chair.is-in .chair-line:nth-child(2) > span { transition-delay: 0.09s; }
+.chair.is-in .chair-line:nth-child(3) > span { transition-delay: 0.18s; }
+
+/* copy sits in the right half — the open space on the left is the point */
+.chair-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 50%);
+  justify-content: end;
+  margin-top: clamp(48px, 7.5vw, 128px);
+}
+
+.chair-copy {
+  margin: 0;
+  max-width: 62ch;
+  color: #1c1c1c;
+  font-size: clamp(16px, 1.28vw, 21px);
+  line-height: 1.78;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.7s ease 0.24s, transform 0.7s cubic-bezier(0.22,0.68,0.24,1) 0.24s;
+}
+.chair.is-in .chair-copy { opacity: 1; transform: translateY(0); }
+
 .lockup {
   width: var(--lock);
   display: flex;
@@ -482,6 +544,14 @@ a { color: inherit; text-decoration: none; }
   .menu-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
+@media (max-width: 860px) {
+  .chair-grid {
+    grid-template-columns: minmax(0, 1fr);
+    justify-content: stretch;
+  }
+  .chair-copy { max-width: none; }
+}
+
 @media (max-width: 560px) {
   :root { --lock: min(86vw, 420px); }
 
@@ -526,6 +596,10 @@ a { color: inherit; text-decoration: none; }
     transform: none;
     filter: none;
   }
+
+  /* the second hero must never be left hidden behind a scroll trigger */
+  .chair-line > span { transform: none !important; }
+  .chair-copy { opacity: 1 !important; transform: none !important; }
 }
 
 /* =====================================================================
