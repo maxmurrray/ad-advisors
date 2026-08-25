@@ -766,6 +766,72 @@ a { color: inherit; text-decoration: none; }
 /* no-art variant */
 .phero--plain { min-height: clamp(220px, 26vw, 360px); }
 
+/* ---------------------------------------------------------------------
+   Service page banner
+   A short, wide crop rather than a tall hero — the old 560px pushed every
+   page's content below the fold. Height is fixed so the photo is cropped,
+   never letterboxed or scaled down.
+
+   Legibility comes from a black-to-white gradient multiplied over the
+   photo: the left stays dark enough to carry text while the right keeps
+   the picture at full strength. That replaces the flat opacity: 0.55 dim,
+   which washed the whole image out and still left the text fighting it.
+   --------------------------------------------------------------------- */
+.phero--service {
+  height: clamp(340px, 26vw, 400px);
+  min-height: 0;                 /* the base rule's min-height would win */
+  align-items: center;           /* base aligns to end; this centres */
+}
+
+.phero--service img {
+  object-fit: cover;
+  object-position: center;       /* keep the subject off the crop edges */
+  opacity: 1;                    /* the gradient does the darkening now */
+}
+
+.phero-grad {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, var(--black), var(--white));
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+/* same container and gutters as .wrap, so the text lines up with the
+   page content underneath it */
+.phero--service .phero-in {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--pad);
+}
+
+/* held to the dark half so it never runs into the lighter right side */
+.phero-text { max-width: 45%; }
+
+.phero--service h1 {
+  font-size: clamp(30px, 4.1vw, 58px);
+  max-width: none;
+}
+
+.phero-sub {
+  margin: clamp(10px, 1.1vw, 18px) 0 0;
+  color: #f1eee8;                /* off-white, not pure white */
+  font-size: clamp(15px, 1.35vw, 21px);
+  font-weight: 400;
+  line-height: 1.45;
+}
+
+@media (max-width: 860px) {
+  /* the dark half is too narrow to hold a paragraph on a phone */
+  .phero-text { max-width: none; }
+}
+
+@media (max-width: 560px) {
+  .phero--service { height: 220px; }
+  .phero--service h1 { font-size: clamp(24px, 7vw, 32px); }
+  .phero-sub { font-size: 15px; }
+}
+
 /* ---- generic content shell ---- */
 .wrap {
   width: 100%;
