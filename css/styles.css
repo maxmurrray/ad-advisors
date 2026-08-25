@@ -309,9 +309,68 @@ a { color: inherit; text-decoration: none; }
 .hero {
   min-height: 100dvh;
   padding: calc(var(--nav-h) + 24px) var(--pad) 24px;
-  background: var(--black);
+  background: var(--white);
   display: grid;
   place-items: center;
+}
+
+/* ---------------------------------------------------------------------
+   Statement hero
+   The headline arrives in phrases rather than letters — six small
+   reveals, ~80ms apart, the whole thing done inside a second. Long
+   enough to read as deliberate, short enough that nobody waits on it.
+   --------------------------------------------------------------------- */
+
+.statement {
+  width: 100%;
+  max-width: 1180px;
+  text-align: center;
+}
+
+.statement-head {
+  margin: 0;
+  color: var(--black);
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: clamp(38px, 7.4vw, 108px);
+  line-height: 1.04;
+  letter-spacing: -0.018em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.statement-line { display: block; }
+
+.statement-sub {
+  margin: clamp(14px, 1.6vw, 26px) 0 0;
+  color: var(--gold);
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: clamp(18px, 2.7vw, 40px);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* each phrase is its own inline block so it can move independently */
+.reveal {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.22em);
+  filter: blur(6px);
+  animation: reveal-phrase 0.42s cubic-bezier(0.22, 0.68, 0.24, 1) forwards;
+  animation-delay: calc(var(--i, 0) * 0.08s + 0.12s);
+  /* inline-block collapses the space between spans in source — restore it */
+  margin-right: 0.26em;
+}
+.reveal:last-child { margin-right: 0; }
+
+@keyframes reveal-phrase {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
 }
 
 .lockup {
@@ -444,6 +503,10 @@ a { color: inherit; text-decoration: none; }
     /* stacked, so the wordmark shares the emblem's left edge */
     --sheen-x: 0px;
   }
+
+  /* the two-line break is a desktop composition — let the phone wrap it */
+  .statement-line { display: inline; }
+  .statement-head { text-wrap: pretty; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -455,6 +518,14 @@ a { color: inherit; text-decoration: none; }
   /* park the sheen rather than flicker it — the logo just sits in flat gold */
   .lockup-mark-sheen { animation: none !important; opacity: 0; }
   .lockup-type { animation: none !important; }
+
+  /* the statement is the page's first impression — show it, don't animate it */
+  .reveal {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
 }
 
 /* =====================================================================
